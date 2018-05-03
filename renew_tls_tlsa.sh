@@ -82,10 +82,10 @@ installNewCerts(){
 # fullchainpath=/etc/letsencrypt/live/${domain}.${tld}/fullchain.pem
 # keypath=/etc/letsencrypt/live/${domain}.${tld}/privkey.pem
 updateDNSSec(){
-    newhash=$(tlsa_rdata $fullchainpath 3 1 1 | grep "3 1 1" | awk ' { print $4 } ')
+    newhash=$(./tlsa_rdata $fullchainpath 3 1 1 | grep "3 1 1" | awk ' { print $4 } ')
     sed -i "s/$oldhash/$newhash/g" "${zonefile}"
     zone=""${domain}"."${tld}""
-    zonesigner.sh "${zone}" "${zonefile}"
+    ./zonesigner.sh "${zone}" "${zonefile}"
     systemctl restart bind9
 }
 restoreNginx(){
